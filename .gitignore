@@ -4,3 +4,4 @@ data/bert.small.torch
 data/parameter/small/parameters.txt
 data/bert.base.torch.zip
 data/bert.small.torch.zip 
+.DS_Store
