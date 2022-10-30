@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from preprocess.src.dataLoader import DataLoader
 from models.classifier.classifier import Classifier
 from models.encoder.configs import Config
+from train.train import Trainer
 from pretrain.load import Parameters, load_variable
 load_dotenv()
 DATASET_TYPE = os.getenv('DATASET_TYPE')
@@ -19,6 +20,7 @@ SPLIT_RATES = float(os.getenv('SPLIT_RATES'))
 PARAMETER_PATH = os.getenv('PARAMETER_PATH')
 
 def main():
+    trainer = Trainer()
     dataLoader = DataLoader()
     dataLoader.SetDataset(DATASET_TYPE, DATASET_PATH, MAX_LEN, SPLIT_RATES, BATCH_SIZE)
     trainDataLoader = dataLoader.GetTrainDataLoader()
@@ -26,9 +28,8 @@ def main():
     parameters = load_variable(PARAMETER_PATH)
     parameters = Parameters(parameters)
     models = Classifier(config, parameters)
-    for a,b,c,d in trainDataLoader:
-        inputs = (a,b,c)
-        print(models(inputs))
+    models.LoadParameters()
+    trainer.Train(models, trainDataLoader)
 
 if __name__ == "__main__":
     main()
