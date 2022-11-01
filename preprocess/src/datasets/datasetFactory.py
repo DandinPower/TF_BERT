@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from .yelpDataset import YelpDataset
 from .colaDataset import ColaDataset
 from .sstDataset import SstDataset
+from .qqpDataset import QqpDataset
 load_dotenv()
 
 class DatasetFactory:
@@ -23,5 +24,7 @@ class DatasetFactory:
             return ColaDataset(_datasetPath, _maxLen, _vocab, _splitRate)
         elif _type == 'SST':
             return SstDataset(_datasetPath, _maxLen, _vocab, _splitRate)
+        elif _type == 'QQP':
+            return QqpDataset(_datasetPath, _maxLen, _vocab, _splitRate)
         else:
             sys.exit('Dataset Type didn\'t exist')  
