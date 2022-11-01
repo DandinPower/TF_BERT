@@ -7,6 +7,8 @@ import numpy as np
 import tensorflow as tf
 from dotenv import load_dotenv
 from .yelpDataset import YelpDataset
+from .colaDataset import ColaDataset
+from .sstDataset import SstDataset
 load_dotenv()
 
 class DatasetFactory:
@@ -17,5 +19,9 @@ class DatasetFactory:
     def GetDataset(self, _type, _datasetPath, _maxLen, _vocab, _splitRate):
         if _type == 'YELP':
             return YelpDataset(_datasetPath, _maxLen, _vocab, _splitRate)
+        elif _type == 'COLA':
+            return ColaDataset(_datasetPath, _maxLen, _vocab, _splitRate)
+        elif _type == 'SST':
+            return SstDataset(_datasetPath, _maxLen, _vocab, _splitRate)
         else:
             sys.exit('Dataset Type didn\'t exist')  

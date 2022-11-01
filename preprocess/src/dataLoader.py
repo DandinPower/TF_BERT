@@ -22,6 +22,12 @@ class DataLoader():
         bufferSize = 1
         if (self.shuffle):
             bufferSize = len(self.labels)
+        remain = len(self.tokens) % self.batch
+        if remain != 0:
+            self.tokens = self.tokens[:-remain]
+            self.segments = self.segments[:-remain]
+            self.validLens = self.validLens[:-remain]
+            self.labels = self.labels[:-remain]
         dataset = tf.data.Dataset.from_tensor_slices((self.tokens, self.segments, self.validLens, self.labels)).batch(self.batch).shuffle(buffer_size = bufferSize)
         return dataset
 
