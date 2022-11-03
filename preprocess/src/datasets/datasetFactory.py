@@ -1,15 +1,10 @@
-import collections
-import json
-import os
 import sys
-import pandas as pd
-import numpy as np
-import tensorflow as tf
 from dotenv import load_dotenv
 from .yelpDataset import YelpDataset
 from .colaDataset import ColaDataset
 from .sstDataset import SstDataset
 from .qqpDataset import QqpDataset
+from .stsbDataset import StsbDataset
 load_dotenv()
 
 class DatasetFactory:
@@ -26,5 +21,7 @@ class DatasetFactory:
             return SstDataset(_datasetPath, _maxLen, _vocab, _splitRate)
         elif _type == 'QQP':
             return QqpDataset(_datasetPath, _maxLen, _vocab, _splitRate)
+        elif _type == 'STSB':
+            return StsbDataset(_datasetPath, _maxLen, _vocab, _splitRate)
         else:
             sys.exit('Dataset Type didn\'t exist')  

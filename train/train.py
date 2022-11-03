@@ -8,6 +8,14 @@ LR = float(os.getenv('LR'))
 NUM_EPOCHS = int(os.getenv('NUM_EPOCHS'))
 LOSS_TYPE = os.getenv('LOSS_TYPE')
 
+def Classification(_x1, _x2, _x3, y, _model, _loss, _metrics, _optimizer):
+        with tf.GradientTape() as tape:
+            y_pred = _model((_x1, _x2, _x3))
+            loss = _loss(y, y_pred)
+            _metrics.update_state(y, y_pred)         
+        grads = tape.gradient(loss, _model.variables)
+        _optimizer.apply_gradients(grads_and_vars=zip(grads, _model.variables))
+
 class EvaluationFactory:
     def __init__(self):
         pass
@@ -15,17 +23,28 @@ class EvaluationFactory:
     def GetLossFunction(self):
         if LOSS_TYPE == 'sparse_categorical_crossentropy':
             return tf.keras.losses.SparseCategoricalCrossentropy()
+        elif LOSS_TYPE == 'mean_square_error':
+            return tf.keras.losses.MeanSquaredError()
 
     def GetMetrics(self):
         if LOSS_TYPE == 'sparse_categorical_crossentropy':
             return tf.metrics.SparseCategoricalAccuracy()
+        elif LOSS_TYPE == 'mean_square_error':
+            return tf.keras.metrics.BinaryAccuracy()
 
+    def GetOptimize(self):
+        if LOSS_TYPE == 'sparse_categorical_crossentropy':
+            return Classification
+        elif LOSS_TYPE == 'mean_square_error':
+            return Classification
+         
 class Trainer:
     def __init__(self):
         self.factory = EvaluationFactory()
         self.history = []
         self.loss = self.factory.GetLossFunction()
         self.metrics = self.factory.GetMetrics()
+        self.optimize = self.factory.GetOptimize()
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=LR)
 
     def WriteHistory(self, _path):
@@ -44,13 +63,7 @@ class Trainer:
             pBar = ProgressBar().start()
             for data in _dataset:
                 x1, x2, x3, y = data
-                with tf.GradientTape() as tape:
-                    y_pred = self.model((x1, x2, x3))
-                    loss = self.loss(y, y_pred)
-                    self.metrics.update_state(y, y_pred)
-                    loss = tf.reduce_mean(loss)          
-                grads = tape.gradient(loss, self.model.variables)
-                self.optimizer.apply_gradients(grads_and_vars=zip(grads, self.model.variables))
+                self.optimize(x1, x2, x3, y, self.model, self.loss, self.metrics, self.optimizer)
                 pBar.update(int((j / (total - 1)) * 100))
                 j += 1
             pBar.finish()

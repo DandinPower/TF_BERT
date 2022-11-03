@@ -8,6 +8,7 @@ import tensorflow as tf
 from dotenv import load_dotenv
 from preprocess.src.dataLoader import DataLoader
 from models.classifier.classifier import Classifier
+from models.classifier.regressioner import Regressioner
 from models.encoder.configs import Config
 from train.train import Trainer
 from pretrain.load import Parameters, load_variable
@@ -28,6 +29,7 @@ def main():
     parameters = load_variable(PARAMETER_PATH)
     parameters = Parameters(parameters)
     models = Classifier(config, parameters)
+    #models = Regressioner(config, parameters)
     models.LoadParameters()
     trainer.Train(models, trainDataLoader)
 

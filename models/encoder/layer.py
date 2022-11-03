@@ -3,9 +3,9 @@ class LinearLayer(tf.keras.layers.Layer):
     def __init__(self, input_dim,output_dim):
         super().__init__()
         self.w = self.add_weight(name='w',
-            shape=[input_dim, output_dim], initializer=tf.zeros_initializer())
+            shape=[input_dim, output_dim], initializer="random_normal", trainable = True)
         self.b = self.add_weight(name='b',
-            shape=[output_dim], initializer=tf.zeros_initializer())
+            shape=[output_dim], initializer="random_normal", trainable = True)
 
     def call(self, inputs):
         y_pred = tf.matmul(inputs, self.w) + self.b
