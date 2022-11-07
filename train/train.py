@@ -1,5 +1,6 @@
 import tensorflow as tf
 from progressbar import ProgressBar
+from .history import HistoryRecorder
 from dotenv import load_dotenv
 import os
 import time
@@ -41,21 +42,16 @@ class EvaluationFactory:
 class Trainer:
     def __init__(self):
         self.factory = EvaluationFactory()
-        self.history = []
+        self.history = HistoryRecorder()
         self.loss = self.factory.GetLossFunction()
         self.metrics = self.factory.GetMetrics()
         self.optimize = self.factory.GetOptimize()
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=LR)
 
-    def WriteHistory(self, _path):
-        with open(_path, 'w') as f:
-            for item in self.history:
-                f.write(f'{item}\n')
-
     def Train(self, _model, _dataset):
         print('Training...')
         self.model = _model
-        self.history.clear()
+        self.history.Reset()
         total = len(_dataset)
         for x in range(NUM_EPOCHS):
             startTime = time.time()
@@ -70,6 +66,7 @@ class Trainer:
             acc = self.metrics.result().numpy()
             print(f'cost time: {round(time.time() - startTime,3)} sec')
             print(f'epoch:{x} accuracy:{acc}')
-            self.history.append(acc)
+            self.history.AddRecord(acc)
             self.metrics.reset_states()
+        self.history.WriteHistory()
         
