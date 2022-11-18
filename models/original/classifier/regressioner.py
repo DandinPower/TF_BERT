@@ -21,3 +21,9 @@ class Regressioner(tf.keras.Model):
 
     def LoadParameters(self):
         self.bert.LoadParameters()
+
+    def End(self):
+        pass
+
+    def NewEpoch(self):
+        pass

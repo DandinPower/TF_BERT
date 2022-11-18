@@ -54,6 +54,7 @@ class Trainer:
         self.history.Reset()
         total = len(_dataset)
         for x in range(NUM_EPOCHS):
+            self.model.NewEpoch()
             startTime = time.time()
             j = 0
             pBar = ProgressBar().start()
@@ -68,5 +69,6 @@ class Trainer:
             print(f'epoch:{x} accuracy:{acc}')
             self.history.AddRecord(acc)
             self.metrics.reset_states()
+        self.model.End()
         self.history.WriteHistory()
         
