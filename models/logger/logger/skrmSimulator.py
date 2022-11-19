@@ -26,4 +26,4 @@ class SKRM:
         return self.shifts * shiftsEnergy + self.detects * detectsEnergy + self.removes * removesEnergy + self.inserts * insertsEnergy
 
     def Show(self):
-        print(f'shifts: {self.shifts}, detects: {self.detects}, inserts: {self.inserts}, removes: {self.removes}, latency: {self.CountLatency()}s, energy: {self.CountEnergy()}fJ')
+        print(f'shifts: {self.shifts}, latency: {self.shifts * 5e-10}, energy: {self.shifts * 20}; detects: {self.detects}, latency: {self.detects * 1e-10}, energy: {self.detects * 2}; inserts: {self.inserts}, latency: {self.inserts * 1e-9}, energy: {self.inserts * 200}; removes: {self.removes}, latency: {self.removes * 8e-10}, energy: {self.removes * 20}; total latency: {self.CountLatency()}s, total energy: {self.CountEnergy()}fJ')
