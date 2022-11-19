@@ -20,7 +20,7 @@ class Classifier_Logger(tf.keras.Model):
         self.logger = FullLogger(blockSize)
         self.config = config 
         self.parameters = parameters
-        self.bert = Bert(config, self.parameters)
+        self.bert = Bert(config, self.parameters, self.logger)
         self.classifier = LinearLayer(config.numHiddens, CLASSIFICATION_TYPES)
 
     def call(self, inputs):
@@ -40,3 +40,5 @@ class Classifier_Logger(tf.keras.Model):
     
     def End(self):
         self.logger.WriteLog(LOG_PATH)
+        self.logger.ShowNaiveResult(0)
+        self.logger.ShowImproveResult(0)

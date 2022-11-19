@@ -26,3 +26,6 @@ class Classifier(tf.keras.Model):
 
     def End(self):
         pass
+
+    def NewEpoch(self):
+        pass

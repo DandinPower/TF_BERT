@@ -22,17 +22,21 @@ class AddNorm(tf.keras.Model):
         return self.ln(self.dropout(Y) + X)
 
 class PositionWiseFFN(tf.keras.Model):
-    def __init__(self, config, parameters,index):
+    def __init__(self, config, parameters, index, logger):
         super(PositionWiseFFN, self).__init__()
         self.config = config 
         self.parameters = parameters 
         self.index = index 
+        self.logger = logger
         self.dense1 = LinearLayer(config.ffnNumInput, config.ffnNumHiddens)
         self.relu = tf.keras.layers.ReLU()
         self.dense2 = LinearLayer(config.ffnNumHiddens, config.ffnNumInput)
 
     def call(self, X):
-        return self.dense2(self.relu(self.dense1(X)))
+        self.logger.AddNewLog([X.shape, self.dense1.w.shape], "matmul")
+        output = self.relu(self.dense1(X))
+        self.logger.AddNewLog([output.shape, self.dense2.w.shape], "matmul")
+        return self.dense2(output)
 
     def LoadParameters(self):
         self.dense2.set_weights([self.parameters[f"encoder.blks.{self.index}.ffn.dense1.weight"],self.parameters[f"encoder.blks.{self.index}.ffn.dense2.bias"]])
