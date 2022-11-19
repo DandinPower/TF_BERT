@@ -6,6 +6,7 @@ from models.original.classifier.regressioner import Regressioner
 from models.original.encoder.configs import Config
 from models.approximate.classifier.classifier import Classifier_Approximate
 from models.logger.classifier.classifier import Classifier_Logger
+from models.skrm.classifier.classifier import Classifier_SKRM
 from pretrain.load import Parameters, load_variable
 load_dotenv()
 PARAMETER_PATH = os.getenv('PARAMETER_PATH')
@@ -23,5 +24,7 @@ class BertFactory:
             return Classifier_Approximate(self.config, self.parameters)
         elif _type == 'Logger':
             return Classifier_Logger(self.config, self.parameters)
+        elif _type == 'Skrm':
+            return Classifier_SKRM(self.config, self.parameters)
         else:
             sys.exit('Model Type didn\'t exist')  

@@ -7,6 +7,7 @@ class Counter:
         self.tensors = []
         self.floatNumsInTensors = []
         self.N = 32
+        self.type = 'abstract'
 
     def SetLog(self, _tensors):
         self.tensors.clear()
@@ -42,6 +43,7 @@ class MatmulCounter(Counter):
     def __init__(self, *args):
         self.standardTensor = []
         super().__init__(*args)
+        self.type = 'Matmul'
 
     def SetBlockSize(self, _blockSize):
         self.blockSize = _blockSize
@@ -120,6 +122,7 @@ class MatmulCounter(Counter):
 class TransposeCounter(Counter):
     def __init__(self, *args):
         super().__init__(*args)
+        self.type = 'Transpose'
 
     def ShowLog(self):
         return f'transpose;{self.id};{self.tensors[0]}'

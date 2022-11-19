@@ -1,5 +1,9 @@
 from .factory import CounterFactory
 from .skrmSimulator import SKRM
+from dotenv import load_dotenv
+import os
+load_dotenv()
+LOG_TYPE = os.getenv('LOG_TYPE')
 
 class Logger:
     def __init__(self, _id, _blockSize):
@@ -25,12 +29,18 @@ class Logger:
 
     def ShowNaiveResult(self):
         for counter in self.datas:
-            self.naiveSkrm.Add(counter.GetSkrmNaiveRecord())
+            if LOG_TYPE == 'All':
+                self.naiveSkrm.Add(counter.GetSkrmNaiveRecord())
+            elif counter.type == LOG_TYPE:
+                self.naiveSkrm.Add(counter.GetSkrmNaiveRecord())
         self.naiveSkrm.Show()
 
     def ShowImproveResult(self):
         for counter in self.datas:
-            self.skrm.Add(counter.GetSkrmImproveRecord())
+            if LOG_TYPE == 'All':
+                self.skrm.Add(counter.GetSkrmImproveRecord())
+            elif counter.type == LOG_TYPE:
+                self.skrm.Add(counter.GetSkrmImproveRecord())
         self.skrm.Show()
   
 class FullLogger:

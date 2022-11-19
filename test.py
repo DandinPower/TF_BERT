@@ -5,8 +5,9 @@ import pandas as pd
 import numpy as np
 import tensorflow as tf
 from dotenv import load_dotenv
+from models.logger.logger.skrmSimulator import SKRM
 
-history = [1, 0, 1]
-with open("a_file.txt", "w") as f:
-    for item in history:
-        f.write(f'{item}\n')
+skrm = SKRM()
+skrm.shifts = 477815111680
+print(skrm.CountLatency())
+print(skrm.CountEnergy())
