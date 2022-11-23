@@ -1,12 +1,12 @@
 import os
 import sys
 from dotenv import load_dotenv
-from models.original.classifier.classifier import Classifier
-from models.original.classifier.regressioner import Regressioner
-from models.original.encoder.configs import Config
-from models.approximate.classifier.classifier import Classifier_Approximate
-from models.logger.classifier.classifier import Classifier_Logger
-from models.skrm.classifier.classifier import Classifier_SKRM
+from models.bert.original.classifier.classifier import Classifier
+from models.bert.original.classifier.regressioner import Regressioner
+from models.bert.original.encoder.configs import Config
+from models.bert.approximate.classifier.classifier import Classifier_Approximate
+from models.bert.logger.classifier.classifier import Classifier_Logger
+from models.bert.skrm.classifier.classifier import Classifier_SKRM
 from pretrain.load import Parameters, load_variable
 load_dotenv()
 PARAMETER_PATH = os.getenv('PARAMETER_PATH')
