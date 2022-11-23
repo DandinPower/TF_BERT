@@ -3,15 +3,16 @@ from .layer import AddNorm,PositionWiseFFN
 import tensorflow as tf
 
 class EncoderBlock(tf.keras.Model):
-    def __init__(self,config, parameters, index,use_bias=False):
+    def __init__(self,config, parameters, index,skrm,use_bias=False):
         super(EncoderBlock, self).__init__()
         self.index = index 
         self.config = config
+        self.skrm = skrm
         self.parameters = parameters
-        self.attention = MultiHeadAttention(config,parameters,index,use_bias)
-        self.addnorm1 = AddNorm(config.dropout)
-        self.ffn = PositionWiseFFN(config,parameters,index)
-        self.addnorm2 = AddNorm(config.dropout)
+        self.attention = MultiHeadAttention(config,parameters,skrm,index,use_bias)
+        self.addnorm1 = AddNorm(config.dropout,skrm)
+        self.ffn = PositionWiseFFN(config,parameters,skrm,index)
+        self.addnorm2 = AddNorm(config.dropout,skrm)
 
     def call(self, inputs):
         (X, valid_lens) = inputs

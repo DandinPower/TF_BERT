@@ -37,6 +37,9 @@ class Classifier_Logger(tf.keras.Model):
 
     def NewEpoch(self):
         self.logger.SetNewEpochs()
+
+    def Update(self):
+        pass
     
     def End(self):
         self.logger.WriteLog(LOG_PATH)

@@ -21,8 +21,12 @@ class Classifier_SKRM(tf.keras.Model):
         self.skrm = SKRM()
         self.bert = Bert(config, self.parameters, self.skrm)
         self.classifier = LinearLayer(config.numHiddens, CLASSIFICATION_TYPES)
+        self.count = 0
 
     def call(self, inputs):
+        self.count += 1
+        if (self.count % 1000 == 0):
+            self.Update()
         output = self.bert(inputs)
         output2 = self.classifier(output)
         self.skrm.Count(output, output2)
@@ -33,8 +37,11 @@ class Classifier_SKRM(tf.keras.Model):
     def LoadParameters(self):
         self.bert.LoadParameters()
 
+    def Update(self):
+        self.skrm.Reset()
+
     def End(self):
-        print(self.skrm.GetCount())
+        print(self.skrm.store)
 
     def NewEpoch(self):
         pass

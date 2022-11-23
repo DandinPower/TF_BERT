@@ -8,9 +8,9 @@ class Bert(tf.keras.Model):
         super(Bert, self).__init__()
         self.parameters = parameters
         self.skrm = skrm 
-        self.encoder = BERTEncoder(config,parameters)
-        self.block1 = EncoderBlock(config,parameters,0,True)
-        self.block2 = EncoderBlock(config,parameters,1,True)
+        self.encoder = BERTEncoder(config,parameters,self.skrm)
+        self.block1 = EncoderBlock(config,parameters,0,self.skrm,True)
+        self.block2 = EncoderBlock(config,parameters,1,self.skrm,True)
         self.hidden = tf.keras.Sequential()
         tempLinearLayer = LinearLayer(config.numHiddens, config.numHiddens)
         tempLinearLayer.set_weights([parameters["hidden.0.weight"],parameters["hidden.0.bias"]])
@@ -20,10 +20,13 @@ class Bert(tf.keras.Model):
     def call(self, inputs):
         (tokens, segments, valid_lens) = inputs
         embeddingX = self.encoder((tokens,segments))
-        X = self.block1((embeddingX, valid_lens))
-        X = self.block2((X, valid_lens))
-        X = self.hidden(X[:, 0, :])
-        return X
+        X1 = self.block1((embeddingX, valid_lens))
+        X2 = self.block2((X1, valid_lens))
+        X3 = self.hidden(X2[:, 0, :])
+        #encoder已完成
+        #block已完成
+        self.skrm.Count(X2,X3)
+        return X3
 
     def LoadParameters(self):
         self.encoder.LoadParameters()

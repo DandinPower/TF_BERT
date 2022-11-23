@@ -36,3 +36,6 @@ class Classifier_Approximate(tf.keras.Model):
 
     def NewEpoch(self):
         pass
+
+    def Update(self):
+        pass
