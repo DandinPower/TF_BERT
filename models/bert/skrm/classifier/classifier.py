@@ -1,5 +1,6 @@
 from ..encoder.layer import LinearLayer
 from ..encoder.bert import Bert
+from ....bert.original.classifier.classifier import Classifier
 import tensorflow as tf
 from ..skrm.skrm import SKRM
 from tensorflow.python.framework import ops
@@ -13,9 +14,9 @@ def _count_skrm_grad(op, grad):
 
 CLASSIFICATION_TYPES = int(os.getenv('CLASSIFICATION_TYPES'))
 
-class Classifier_SKRM(tf.keras.Model):
+class Classifier_SKRM(Classifier):
     def __init__(self, config, parameters):
-        super(Classifier_SKRM, self).__init__()
+        super(Classifier_SKRM, self).__init__(config, parameters)
         self.config = config 
         self.parameters = parameters
         self.skrm = SKRM()
@@ -34,14 +35,8 @@ class Classifier_SKRM(tf.keras.Model):
         self.skrm.Count(output2,result)
         return result
 
-    def LoadParameters(self):
-        self.bert.LoadParameters()
-
     def Update(self):
-        self.skrm.Reset()
+        self.skrm.Store()
 
     def End(self):
         print(self.skrm.store)
-
-    def NewEpoch(self):
-        pass

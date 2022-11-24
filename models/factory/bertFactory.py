@@ -1,7 +1,7 @@
 import os
 import sys
 from dotenv import load_dotenv
-from models.bert.original.classifier.classifier import Classifier
+from models.bert.original.classifier.classifier import Classifier, Classifier_Original
 from models.bert.original.classifier.regressioner import Regressioner
 from models.bert.original.encoder.configs import Config
 from models.bert.approximate.classifier.classifier import Classifier_Approximate
@@ -19,7 +19,7 @@ class BertFactory:
 
     def GetBert(self, _type):
         if _type == 'Original':
-            return Classifier(self.config, self.parameters)
+            return Classifier_Original(self.config, self.parameters)
         elif _type == 'Approximate':
             return Classifier_Approximate(self.config, self.parameters)
         elif _type == 'Logger':

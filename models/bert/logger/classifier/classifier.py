@@ -1,6 +1,7 @@
 from ..encoder.layer import LinearLayer
 from ..encoder.bert import Bert
 from ..logger.logger import FullLogger
+from ....bert.original.classifier.classifier import Classifier
 import tensorflow as tf
 import os
 from dotenv import load_dotenv
@@ -14,9 +15,9 @@ LOG_PATH = os.getenv('LOG_PATH')
 
 blockSize = [[BLOCK_SIZE_A_ROWS, BLOCK_SIZE_A_COLS], [BLOCK_SIZE_A_COLS, BLOCK_SIZE_B_COLS]]
 
-class Classifier_Logger(tf.keras.Model):
+class Classifier_Logger(Classifier):
     def __init__(self, config, parameters):
-        super(Classifier_Logger, self).__init__()
+        super(Classifier_Logger, self).__init__(config, parameters)
         self.logger = FullLogger(blockSize)
         self.config = config 
         self.parameters = parameters
@@ -32,14 +33,8 @@ class Classifier_Logger(tf.keras.Model):
         self.logger.AddNewLog([shape1, shape2], "matmul")
         return result
 
-    def LoadParameters(self):
-        self.bert.LoadParameters()
-
     def NewEpoch(self):
         self.logger.SetNewEpochs()
-
-    def Update(self):
-        pass
     
     def End(self):
         self.logger.WriteLog(LOG_PATH)

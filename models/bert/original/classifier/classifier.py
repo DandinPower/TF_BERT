@@ -10,6 +10,26 @@ CLASSIFICATION_TYPES = int(os.getenv('CLASSIFICATION_TYPES'))
 class Classifier(tf.keras.Model):
     def __init__(self, config, parameters):
         super(Classifier, self).__init__()
+        self.bert = Bert(config, parameters)
+
+    def call(self, inputs):
+        pass
+
+    def LoadParameters(self):
+        self.bert.LoadParameters()
+
+    def End(self):
+        pass
+
+    def NewEpoch(self):
+        pass
+
+    def Update(self):
+        pass
+
+class Classifier_Original(Classifier):
+    def __init__(self, config, parameters):
+        super(Classifier_Original, self).__init__(config, parameters)
         self.config = config 
         self.parameters = parameters
         self.bert = Bert(config, self.parameters)
@@ -20,12 +40,3 @@ class Classifier(tf.keras.Model):
         output = self.classifier(output)
         result = tf.nn.softmax(output)
         return result
-
-    def LoadParameters(self):
-        self.bert.LoadParameters()
-
-    def End(self):
-        pass
-
-    def NewEpoch(self):
-        pass
