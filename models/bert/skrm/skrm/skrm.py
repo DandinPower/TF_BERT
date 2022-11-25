@@ -19,7 +19,10 @@ class SKRM:
 
     #將目前的結果儲存起來
     def Store(self):
-        self.store.append(self.count)
+        temp = []
+        for item in self.count:
+            temp.append(item)
+        self.store.append(temp)
         self.Reset()
     
     #根據兩個tensor來計算
