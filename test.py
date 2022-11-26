@@ -4,9 +4,7 @@ import os
 import pandas as pd
 import numpy as np
 import tensorflow as tf
-from dotenv import load_dotenv
-from models.logger.logger.skrmSimulator import SKRM
-from models.logger.logger.logger import FullLogger
+
 
 '''
 block = [[4, 4], [4, 4]]
@@ -44,9 +42,4 @@ lstm_our_inserts = 0
 lstm_original_removes = 661504
 lstm_our_removes = 0
 
-skrm = SKRM()
-skrm.shifts = lstm_our_shifts
-skrm.detects = lstm_our_detects
-skrm.inserts = lstm_our_inserts
-skrm.removes = lstm_our_removes
-print(skrm.Show())
+

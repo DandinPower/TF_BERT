@@ -26,8 +26,9 @@ class Classifier_SKRM(Classifier):
 
     def call(self, inputs):
         self.count += 1
-        if (self.count % 1000 == 0):
-            self.Update()
+        '''
+        if (self.count % 40 == 0):
+            self.Update()'''
         output = self.bert(inputs)
         output2 = self.classifier(output)
         self.skrm.Count(output, output2)
@@ -37,6 +38,8 @@ class Classifier_SKRM(Classifier):
 
     def Update(self):
         self.skrm.Store()
+        print(self.skrm.store)
 
     def End(self):
+        self.skrm.Store()
         print(self.skrm.store)
